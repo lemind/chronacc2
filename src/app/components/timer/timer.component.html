@@ -1,0 +1,5 @@
+<span *ngIf="beginTime">{{ time$ | async}}</span>
+<div>
+  <button (click)="start.emit()" *ngIf="!isActive">Start</button>
+  <button (click)="stop.emit()" *ngIf="isActive">Stop</button>
+</div>

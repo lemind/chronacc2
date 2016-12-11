@@ -1,3 +1,8 @@
 <h1>
   {{title}}
+  <app-current-task
+    [task]="currentTask$ | async"
+    (submitTask)="submitTask($event)"
+    (taskChange)="taskActions.updateTaskForm($event)">
+  </app-current-task>
 </h1>

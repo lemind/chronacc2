@@ -1,0 +1,12 @@
+<div>
+  <form [formGroup]="taskForm" novalidate>
+    <input type="hidden"  formControlName="id" />
+    <input placeholder="Name" formControlName="name" />
+  </form>
+  <app-timer
+    [isActive]="isActive$ | async"
+    [beginTime]="beginTime$ | async"
+    (stop)="stop()"
+    (start)="start()">
+  </app-timer>
+</div>
