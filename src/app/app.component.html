@@ -2,7 +2,11 @@
   {{title}}
   <app-current-task
     [task]="currentTask$ | async"
+    [isActive]="currentTaskIsActive$"
     (submitTask)="submitTask($event)"
     (taskChange)="taskActions.updateTaskForm($event)">
   </app-current-task>
+  <app-task-list
+    [tasks]="tasks$">
+  </app-task-list>
 </h1>

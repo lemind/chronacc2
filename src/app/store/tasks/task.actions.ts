@@ -19,6 +19,7 @@ export class TaskActions {
   static TASKS_LOADING_ERROR = 'TASKS_LOADING_ERROR';
   static TASKS_LOADED = 'TASKS_LOADED';
   static TASK_DELETED = 'TASK_DELETED';
+  static TASK_CLEARED = 'TASK_CLEARED';
   static TASK_SELECTED = 'TASK_SELECTED';
   static TASK_FORM_UPDATE = 'TASK_FORM_UPDATE';
   static TASK_FORM_UPDATED = 'TASK_FORM_UPDATED';
@@ -37,6 +38,12 @@ export class TaskActions {
   selectTask = (task) => {
     const selectedTask = Object.assign({}, { currentTask: task });
     this.dispatch({ type: TaskActions.TASK_SELECTED, payload: selectedTask });
+  };
+
+  clearSelectedTask = () => {
+    if (this.ngRedux.getState().taskActive.isActive) {
+      this.dispatch({ type: TaskActions.TASK_CLEARED });
+    }
   };
 
   submitTask = (task) => {

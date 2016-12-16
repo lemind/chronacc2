@@ -7,6 +7,7 @@ let setPending = (state, isPending) => Object.assign({}, state, { isPending });
 let { TASK_SELECTED,
   UPDATING_TASK,
   CREATING_TASK,
+  TASK_CLEARED,
   TASK_CREATED,
   TASK_UPDATED,
   TASK_UPDATE_ERROR,
@@ -24,6 +25,8 @@ export const taskActive = (state: ITaskActive = INITIAL_STATE, action) => {
         state,
         { isActive: true },
         action.payload);
+    case TASK_CLEARED:
+      return INITIAL_STATE;
     case UPDATING_TASK:
     case CREATING_TASK:
       return setPending(state, true);

@@ -9,7 +9,6 @@ interface ITasks extends Array<ITask> { }
 export { ITask, ITasks };
 
 interface IPeriod {
-  task: ITask;
   begin: string;
   end: string;
 };

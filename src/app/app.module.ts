@@ -9,6 +9,8 @@ import { rootReducer, IAppState, middleware } from './store';
 import { AppComponent } from './app.component';
 import { CurrentTaskComponent } from './components/current-task/current-task.component';
 import { TimerComponent } from './components/timer/timer.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
+import { TaskListItemComponent } from './components/task-list-item/task-list-item.component';
 
 const persistState = require('redux-localstorage');
 
@@ -16,7 +18,9 @@ const persistState = require('redux-localstorage');
   declarations: [
     AppComponent,
     CurrentTaskComponent,
-    TimerComponent
+    TimerComponent,
+    TaskListComponent,
+    TaskListItemComponent
   ],
   imports: [
     BrowserModule,

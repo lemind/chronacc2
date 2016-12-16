@@ -3,6 +3,8 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { TaskActions } from './store/tasks';
 import { select } from 'ng2-redux';
 
+import { ITask } from './store/tasks';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,13 +12,15 @@ import { select } from 'ng2-redux';
   providers: [TaskActions]
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Chronacc!';
 
-  tasks$: Observable<any[]>;
   tasksSubject$: Subject<any[]> = new Subject<any[]>();
   @select(['taskActive', 'currentTask']) currentTask$: Observable<any>;
+  @select(['taskActive', 'isActive']) currentTaskIsActive$: Observable<boolean>;
+  @select() tasks$: Observable<ITask[]>;
 
-  constructor(private taskActions: TaskActions) { 
+  constructor(private taskActions: TaskActions) {
+    this.tasks$.subscribe(d => console.log('tasks', d));
   }
 
   submitTask(taskModel) {
