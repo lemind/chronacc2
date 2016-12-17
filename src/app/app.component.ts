@@ -20,7 +20,6 @@ export class AppComponent {
   @select() tasks$: Observable<ITask[]>;
 
   constructor(private taskActions: TaskActions) {
-    this.tasks$.subscribe(d => console.log('tasks', d));
   }
 
   submitTask(taskModel) {

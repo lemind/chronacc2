@@ -26,9 +26,6 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
   @select(['taskActive', 'currentTask']) currentTask$: Observable<ITask>;
   @select() tasks$: Observable<ITask[]>;
 
-
-  timerIsActive$: Observable<any>;
-  isActiveSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   beginTime$: Observable<any>;
   beginTimeSubject$: Subject<any> = new Subject<any>();
 
@@ -37,6 +34,8 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
 
   periods$: Observable<any[]>;
   taskFormSubscriber: any;
+  lastTwoCurrentTasks: Observable<ITask[]>;
+  isNextOne: boolean = false;
 
   constructor(
       private taskActions: TaskActions,
@@ -45,18 +44,27 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
     ) {}
 
   ngOnInit() {
-    this.timerIsActive$ = this.isActiveSubject$;
     this.beginTime$ = this.beginTimeSubject$;
     this.endTime$ = this.endTimeSubject$;
+
+    this.lastTwoCurrentTasks = this.currentTask$.pairwise();
 
     this.currentTask$
       .withLatestFrom(
         this.isActive,
-        this.timerIsActive$,
-        (currentTask: ITask, isActive, timerIsActive) =>
-        ({isActive, currentTask, timerIsActive}))
+        this.lastTwoCurrentTasks,
+        (currentTask: ITask, isActive, lastTwoCurrentTasks) =>
+        ({isActive, currentTask, lastTwoCurrentTasks}))
       .subscribe(n => {
-        if (!!n.isActive && !n.timerIsActive &&  n.currentTask) {
+        if (!!n.isActive && n.currentTask) {
+          let prevTask = n.lastTwoCurrentTasks[0];
+          let task = n.lastTwoCurrentTasks[1];
+          if (prevTask
+            && task
+            && prevTask.id !== task.id) {
+            this.isNextOne = true;
+            this.stop();
+          }
           this.start(n.currentTask);
         }
       });
@@ -70,14 +78,16 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
       .withLatestFrom(
         this.beginTime$,
         this.currentTask$,
-        (end, begin, currentTask: ITask) =>
-        ({end, begin, currentTask}))
+        this.lastTwoCurrentTasks,
+        (end, begin, currentTask: ITask, lastTwoCurrentTasks) =>
+        ({end, begin, currentTask, lastTwoCurrentTasks}))
       .subscribe(n => {
         let actualBeginTime = n.begin + this.taskService.getAllTaskTime(n.currentTask.periods);
         let period: IPeriod = {begin: actualBeginTime, end: n.end};
         n.currentTask.periods.push(period);
         this.submitTask.emit(n.currentTask);
-        this.taskActions.clearSelectedTask();
+        !this.isNextOne && this.taskActions.clearSelectedTask();
+        this.isNextOne = false;
       });
 
     this.taskFormSubscriber = this.taskForm
@@ -106,14 +116,12 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
   start(task) {
     let beginTime = task ? this.getBeginTime(task) : new Date().getTime();
     this.beginTimeSubject$.next(beginTime);
-    this.isActiveSubject$.next(true);
 
     this.submitTask.emit(task || {id: 'new'});
   }
 
   stop() {
     this.endTimeSubject$.next(new Date().getTime());
-    this.isActiveSubject$.next(false);
   }
 
   getBeginTime(task) {
