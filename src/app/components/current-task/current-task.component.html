@@ -5,7 +5,7 @@
   </form>
   <app-timer
     [isActive]="isActive | async"
-    [beginTime]="beginTime$ | async"
+    [beginTime]="beginTime"
     (stop)="stop()"
     (start)="start()">
   </app-timer>
