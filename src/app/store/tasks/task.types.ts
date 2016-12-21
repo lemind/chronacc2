@@ -1,6 +1,7 @@
 interface ITask {
   id: string;
   name: string;
+  active: boolean,
   periods: IPeriod[];
 };
 

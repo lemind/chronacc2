@@ -98,19 +98,28 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
 
   start(task) {
     if (task) {
-      this.beginTime = this.getBeginTime(task);
+      if (this.taskService.lastPeriodIsCurrentDay(task.periods)) {
+        this.beginTime = this.getBeginTime(task);
+      } else {
+        this.startNewTask(task);
+      }
     } else {
-      this.beginTime = new Date().getTime();
-      this.submitTask.emit({id: 'new'});
+      this.startNewTask();
     }
   }
 
-  stop() {
-    this.endTime = new Date().getTime();
+  startNewTask(task?) {
+    this.beginTime = new Date().getTime();
+    let period: IPeriod = {begin: this.beginTime, end: ''};
+    let newTask: any = {id: 'new', periods: [period]};
+    if (task && task.name) newTask.name = task.name;
+    this.submitTask.emit(newTask);
+  }
 
-    let actualBeginTime = this.beginTime + this.taskService.getAllTaskTime(this.task.periods);
-    let period: IPeriod = {begin: actualBeginTime, end: this.endTime};
-    this.task.periods.push(period);
+  stop() {
+    if (!this.task) return
+    let lastPeriod: IPeriod = this.task.periods[this.task.periods.length - 1];
+    lastPeriod.end = new Date().getTime() + '';
     this.submitTask.emit(this.task);
     !this.isNextOne && this.taskActions.clearSelectedTask();
     this.isNextOne = false;

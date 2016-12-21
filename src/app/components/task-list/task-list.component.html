@@ -1,6 +1,7 @@
 <ul>
   <li *ngFor="let task of taskList$ | async">
     <app-task-list-item [task]="task"
+      [ngClass]="{ 'task-active': task.active }"
       (startTask)="startTask($event);">
     </app-task-list-item>
   </li>

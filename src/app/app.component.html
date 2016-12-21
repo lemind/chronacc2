@@ -7,6 +7,7 @@
     (taskChange)="taskActions.updateTaskForm($event)">
   </app-current-task>
   <app-task-list
+    [currentTask]="currentTask$"
     [tasks]="tasks$">
   </app-task-list>
 </h1>

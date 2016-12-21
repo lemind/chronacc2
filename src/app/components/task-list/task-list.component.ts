@@ -11,14 +11,20 @@ import { ITasks, TaskActions } from '../../store/tasks';
 })
 export class TaskListComponent implements OnInit {
   @Input() tasks: Observable<ITasks>;
+  @Input() currentTask: Observable<any>;
   taskList$: Observable<ITasks>;
 
   constructor(private taskActions: TaskActions) { }
 
   ngOnInit() {
-    this.taskList$ = this.tasks.map(t => {
-      return t.slice().reverse();
-    })
+    this.currentTask.subscribe(currentTask => {
+      this.taskList$ = this.tasks.map(tasks => {
+        tasks.map(task => {
+          task.active = (!!currentTask && currentTask.id === task.id);
+        });
+        return tasks.slice().reverse();
+      });
+    });
   }
 
   startTask(task) {
