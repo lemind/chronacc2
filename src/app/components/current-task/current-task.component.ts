@@ -83,6 +83,7 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
         n.value.periods = n.current.periods;
         this.taskChange.emit(n.value);
       });
+
   }
 
   ngOnChanges(changes: SimpleChanges) { 
@@ -130,6 +131,6 @@ export class CurrentTaskComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.taskFormSubscriber.unsubscribe();
+    this.taskFormSubscriber && this.taskFormSubscriber.unsubscribe();
   }
 }

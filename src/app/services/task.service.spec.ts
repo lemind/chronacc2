@@ -10,7 +10,7 @@ describe('Service: Task', () => {
     });
   });
 
-  it('should ...', inject([TaskService], (service: TaskService) => {
+  it('should create task service', inject([TaskService], (service: TaskService) => {
     expect(service).toBeTruthy();
   }));
 });

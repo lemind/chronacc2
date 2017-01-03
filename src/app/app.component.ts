@@ -12,7 +12,7 @@ import { ITask } from './store/tasks';
   providers: [TaskActions]
 })
 export class AppComponent {
-  title = 'Chronacc!';
+  title = 'Chronacc';
 
   tasksSubject$: Subject<any[]> = new Subject<any[]>();
   @select(['taskActive', 'currentTask']) currentTask$: Observable<any>;
