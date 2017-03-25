@@ -26,8 +26,9 @@ describe('App: Chronacc', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
+        NgReduxModule
       ],
-      providers: [NgRedux],
+      providers: [],
     });
 
   });

@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { NgRedux } from 'ng2-redux';
+import { NgReduxModule } from 'ng2-redux';
 
 import { ITasks, ITask } from '../../store/tasks';
 
@@ -21,7 +21,8 @@ describe('TaskListComponent', () => {
           TaskListComponent,
           TaskListItemComponent
         ],
-      providers: [ NgRedux ],
+      providers: [],
+      imports: [ NgReduxModule ]
     })
     .compileComponents();
   }));

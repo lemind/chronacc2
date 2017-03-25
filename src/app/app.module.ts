@@ -23,12 +23,13 @@ const persistState = require('redux-localstorage');
     TaskListItemComponent
   ],
   imports: [
+    NgReduxModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [NgRedux, DevToolsExtension],
+  providers: [DevToolsExtension],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
